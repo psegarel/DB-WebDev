@@ -3,9 +3,9 @@ description = Defines a new field type for multi-select similar to the facebook 
 package = User interface
 core = 6.x
 
-; Information added by drupal.org packaging script on 2011-02-25
+; Information added by drupal.org packaging script on 2012-04-23
 version = "6.x-6.x-dev"
 core = "6.x"
 project = "gridselect"
-datestamp = "1298619361"
+datestamp = "1335140282"
 

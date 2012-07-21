@@ -1,8 +1,8 @@
-<?php // $Id$
+<?php
 
 /**
  * @file
- * Rules actions for sending Mime-encoded emails (settings forms).
+ * Rules actions for sending MIME-encoded e-mails (settings forms).
  *
  * @addtogroup rules
  * @{
@@ -12,7 +12,8 @@
  * Action "Send an HTML mail to a user" configuration form.
  */
 function mimemail_rules_action_mail_to_user_form($settings = array(), &$form) {
-  $settings += array('sender' => '', 'from' => '', 'subject' => '', 'message_html' => '', 'message_plaintext' => '', 'attachments' => '');
+  $settings += array('sender' => '', 'from' => '', 'subject' => '', 'message_html' => '', 'message_html_filter' => FILTER_FORMAT_DEFAULT, 'message_plaintext' => '', 'attachments' => '');
+
   $form['settings']['sender'] = array(
      '#type' => 'textfield',
     '#title' => t('Sender name'),
@@ -50,7 +51,7 @@ function mimemail_rules_action_mail_to_user_form($settings = array(), &$form) {
     '#description' => t('A list of attachments, one file per line like [mimetype]:[path] e.g. "image/png:/files/images/mypic.png".'),
   );
 
-  $form['settings']['message_html_filter']['format'] = filter_form(variable_get('mimemail_format', FILTER_FORMAT_DEFAULT));
+  $form['settings']['message_html_filter']['format'] = filter_form($settings['message_html_filter']);
 }
 
 /**
@@ -89,9 +90,31 @@ function mimemail_rules_action_mail_form($settings = array(), &$form) {
  * Handle submission for action "Send an HTML mail to a user" configuration form.
  */
 function mimemail_rules_action_mail_submit(&$settings, $form, $form_state) {
+  mimemail_rules_action_form_submit($settings, $form, $form_state);
+}
+
+/**
+ * Handle submission for action "Send an HTML mail to an arbitrary mail address" configuration form.
+ */
+function mimemail_rules_action_mail_to_user_submit(&$settings, $form, $form_state) {
+  mimemail_rules_action_form_submit($settings, $form, $form_state);
+}
+
+/**
+ * Handle submission for action "Send an HTML mail to all users of a role" configuration form.
+ */
+function mimemail_rules_action_mail_to_users_of_role_submit(&$settings, $form, $form_state) {
+  mimemail_rules_action_form_submit($settings, $form, $form_state);
+}
+
+/**
+ * Handle submission for action configuration forms.
+ */
+function mimemail_rules_action_form_submit(&$settings, $form, $form_state) {
   // Unwrap the HTML message from the input filter wrapper.
   $settings['message_html'] = $settings['message_html_filter']['message_html'];
-  unset($settings['message_html_filter']);
+  // Store the value of the choosen input format.
+  $settings['message_html_filter'] = $form_state['values']['format'];
 }
 
 /**

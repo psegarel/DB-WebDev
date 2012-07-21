@@ -1,15 +1,18 @@
-<?php // $Id$
+<?php
+
+/**
+ * @file
+ * The theme system, which controls the output of the messages.
+ */
 
 function mimemail_theme_theme() {
-  $path = drupal_get_path('module', 'mimemail') .'/theme';
-
   return array(
     'mimemail_message' => array(
       'arguments' => array('subject' => NULL, 'body' => NULL, 'mailkey' => NULL, 'recipient' => NULL),
       'template' => 'mimemail-message',
       'pattern' => 'mimemail_message__',
       'file' => 'mimemail.theme.inc',
-      'path' => $path,
+      'path' => drupal_get_path('module', 'mimemail') .'/theme',
     )
   );
 }
@@ -18,11 +21,10 @@ function mimemail_theme_theme() {
  * A preprocess function for theme('mimemail_message').
  *
  * The $variables array initially contains the following arguments:
- * - $subject: The message subject
- * - $body:  The message body
- * - $mailkey:  The mailkey associated with the message
- *
- * See includes/mimemail.tpl.php for additional variables
+ * - $subject: The message subject.
+ * - $body: The message body in HTML format.
+ * - $mailkey: The mailkey associated with the message.
+ * - $recipient: An email address or user object who is receiving the message.
  */
 function template_preprocess_mimemail_message(&$variables) {
   $theme = variable_get('theme_default', NULL);
@@ -73,7 +75,7 @@ function template_preprocess_mimemail_message(&$variables) {
     $styles = array_merge($styles, _mimemail_css_file_paths($css_files_screen));
   }
 
-  // Process each style sheet
+  // Process each style sheet.
   $css = '';
   foreach ($styles as $style) {
     if (!empty($style) && @file_exists($style)) {
@@ -88,7 +90,7 @@ function template_preprocess_mimemail_message(&$variables) {
   // Regexp to match single quoted strings.
   $single_quot = "'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'";
 
-  // Perform some safe CSS optimizations. (derived from core CSS aggregation)
+  // Perform some safe CSS optimizations (derived from core CSS aggregation).
   $css = preg_replace_callback(
     "<$double_quot|$single_quot|$comment>Sus",  // Match all comment blocks along
     "_mimemail_process_comment",                // with double/single quoted strings
@@ -101,7 +103,7 @@ function template_preprocess_mimemail_message(&$variables) {
   // End the file with a new line.
   $css .= "\n";
 
-  // Wordwrap to adhere to RFC821
+  // Wordwrap to adhere to RFC821.
   $css = wordwrap($css, 700);
   $variables['css'] = $css;
 
@@ -110,7 +112,7 @@ function template_preprocess_mimemail_message(&$variables) {
 }
 
 /**
- * Process comment blocks. (derived from core CSS aggregation)
+ * Process comment blocks (derived from core CSS aggregation).
  *
  * This is the callback function for the preg_replace_callback()
  * used in drupal_load_stylesheet_content(). Support for comment
@@ -145,6 +147,6 @@ function _mimemail_process_comment($matches) {
  * Convert an array of CSS files to an array of file paths.
  */
 function _mimemail_css_file_paths($css) {
-  return explode("\n", preg_replace('|<link.*href="'. base_path()
-                        .'([^"?]*)[?"].*|', '\1', drupal_get_css($css)));
+  return explode("\n", preg_replace('|<link.*href="(' . $GLOBALS['base_url'] . ')?' . base_path()
+                        . '([^"?]*)[?"].*|', '\2', drupal_get_css($css)));
 }

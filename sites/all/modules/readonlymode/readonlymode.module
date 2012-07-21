@@ -1,5 +1,5 @@
 <?php 
-// $Id: readonlymode.module,v 1.4 2010/07/14 22:23:28 barisw Exp $
+
 /**
  * @file
  * The Read Only Mode module adds another option to the Site Maintenance page
@@ -13,31 +13,29 @@
 function readonlymode_form_alter(&$form, $form_state, $form_id) {
   if (variable_get('site_readonly', FALSE)) {
     switch ($form_id) {
-      case 'comment_form':
-      case $form['#node']->type .'_node_form':
-        $form = array();
-        $form['comment'] = array('#value' => t('Site is in read only mode, so no content can be posted.'));
+      case 'comment_form':                      // Disable comments
+      case 'user_register':                     // Disable user creation
+      case 'user_profile_form':                 // Disable user edit
+      case $form['#node']->type .'_node_form':  // Disable node/add
+      case 'node_admin_content':                // Disable admin content moderation
+      case 'comment_admin_overview':            // Disable admin comment moderation
+        global $user;
+        if ($user->uid != 1) {
+          $form = array();
+          if ($url = variable_get('site_readonly_url', '')) {
+            drupal_goto($url);
+          }
+          else{
+            $form['notice'] = array('#value' => _readonlymode_notice());
+          }
+        }
+        else {
+          drupal_set_message(t('The site is currently set to read-only, content moderation is disabled for all users but you.'), 'error');
+        }
         break;
     }
   }
   return $form;
-}
-
-/**
-* Implementation of hook_init().
-* Displays message to the user when the site is in Read-Only mode
-*/
-function readonlymode_init() {
-  if (variable_get('site_readonly', FALSE)) {
-    $message = variable_get('site_readonly_message', t("@sitename is currently in maintenance. During this maintenance it is not possible to add or edit content (like comments and pages).", array("@sitename" => variable_get('site_name', 'drupal'))));    
-    $url = variable_get('site_readonly_url', '');
-    if (!empty($message) ) {
-      if (!empty($url)) {
-        $message .= ' <span class="read_more">' . l(t('Read more'), $url) . '</span>';
-      }
-      drupal_set_message($message);
-    }
-  }
 }
 
 /**
@@ -63,16 +61,17 @@ function readonlymode_form_system_site_maintenance_settings_alter(&$form, $form_
     $form["read_only"]["site_readonly_message"] = array(
       "#type" => "textarea",
       "#title" => t("Site read-only message"),
-      "#description" => t("Message to show visitors when the site is in read-only mode. Leave this area empty to disable the display of a message."),
-      "#default_value" => variable_get('site_readonly_message', t("@sitename is currently in maintenance. During this maintenance it is not possible to add or edit content (like comments and pages).", array("@sitename" => variable_get('site_name', 'drupal')))),
+      "#description" => t("The module will replace the forms for posting/editing with the message entered here."),
+      "#default_value" => _readonlymode_notice(),
+      "#required" => TRUE,
     );
     $form["read_only"]["site_readonly_url"] = array(
       "#type" => "textfield",
-      "#title" => t("'Read more' link"),
-      "#description" => t("This url (e.g. node/2) will be added as a <em>Read more</em> link after the message entered above. This is optional."),
+      "#title" => t("Redirect path"),
+      "#description" => t("When given, Drupal will redirect the user to this URL when a user tries to add/edit content instead of displaying the message above."),
       "#default_value" => variable_get('site_readonly_url', ''),
     );
-    $form['#validate'][] = 'readonlymode_form_validate';
+    $form['#validate'][] = 'readonlymode_form_validate_url';
   }
   else{
     $form["site_offline"]["#description"] .= " <strong>" . ('To set the website in Read-Only Mode, you have to set the site status to Online first.') . "</strong>";
@@ -80,14 +79,17 @@ function readonlymode_form_system_site_maintenance_settings_alter(&$form, $form_
 }
 
 /**
-* Implementation of hook_form_FORM_ID_validate().
-* path_admin_form
+* Implementation of hook_form_validate().
 */
-function readonlymode_form_validate(&$form, $form_state) {
+function readonlymode_form_validate_url(&$form, $form_state) {
   if ($path = $form_state['values']['site_readonly_url']) {
     $item = menu_get_item($path);
     if (!$item || !$item['access']) {
       form_set_error('site_readonly_url', t("The path '@link_path' is either invalid or you do not have access to it.", array('@link_path' => $path)));
     }
   }
+}
+
+function _readonlymode_notice() {
+  return variable_get('site_readonly_message', t("@sitename is currently in maintenance. During this maintenance it is not possible to add or edit content (like comments and pages).", array("@sitename" => variable_get('site_name', 'drupal'))));
 }

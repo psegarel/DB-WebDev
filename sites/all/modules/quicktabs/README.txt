@@ -1,5 +1,4 @@
 *******************************************************************************
-$Id: README.txt,v 1.7.2.1 2010/09/11 17:42:53 katbailey Exp $
 
 quicktabs
 
@@ -39,6 +38,7 @@ fields in ANY of your nodes that are supposed to be private, these MUST be
 controlled at admin/content/node-type/MY_NODE_TYPE/display by setting them to 
 be excluded on teaser and node view. Setting them as private through some other 
 mechanism, e.g. Panels, will not affect their being displayed in an ajax Quicktab.
+
 
 
 Author:

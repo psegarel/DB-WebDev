@@ -1,4 +1,0 @@
-ad_text.module:
- Written by Jeremy Andrews (1/2006)
- Maintained by Jeremy Andrews <jeremy@kerneltrap.org>
-

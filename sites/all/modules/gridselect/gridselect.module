@@ -1,4 +1,5 @@
 <?php
+// $Id: gridselect.module,v 1.6 2010/01/08 17:16:59 hadsie Exp $
 
 /**
  * @file
@@ -128,7 +129,7 @@ function template_preprocess_gridselect_field($variables) {
   $variables['sidebar'] = $field['#sidebar'];
   $variables['sidebar_style'] = 'style="height: ' . $cell_height*$rows . 'px;"';
   $variables['multiple'] = isset($field['#multiple']) ? $field['#multiple'] : TRUE;
-  $variables['no_items'] = t('No items are currently available');
+  $variables['no_items'] = isset($field['#no_items']) ? $field['#no_items'] : t('No items are currently available');
 }
 
 /**

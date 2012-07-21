@@ -1,4 +1,5 @@
 <?php
+// $Id: taxonomy_breadcrumb.inc,v 1.1.2.6 2010/03/31 01:46:35 mgn Exp $
 
 /**
  * @file
@@ -23,9 +24,7 @@
  *   The return value of the original callback function.
  */
 function _taxonomy_breadcrumb_term_page($tid, $callback, $file, $filepath) {
-  if (is_file($filepath .'/'. $file)) {
-    require_once($filepath .'/'. $file);
-  }
+  require_once($filepath .'/'. $file);
   $arguments = array_slice(func_get_args(), 4);
   $output =  call_user_func_array($callback, $arguments);
   // Use first term to generate breadcrumb trail.
