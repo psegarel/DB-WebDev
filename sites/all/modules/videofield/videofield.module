@@ -1,0 +1,312 @@
+<?php
+//$Id: videofield.module,v 1.15 2011/01/18 10:40:09 tamerzg Exp $
+/**
+ * @file
+ *  This module ads new CCK field for uploading videos. Uploaded videos are displayed as 
+ *  embedded video using FlowPlayer.
+ *  Idea behind this module is to have a simple field for uploading video content, something similiar 
+ *  to imagefield for images.
+ * 
+ *  @author Tamer Al Zoubi [tamerzg@gmail.com]
+ *  @author Heshan Wanigasooriya <heshan at heidisoft dot com><heshanmw at gmail dot com>
+ */
+
+/**
+ * Implementation of hook_init().
+ *
+ * Load required includes.
+ */
+function videofield_init() {
+  // If FileField is not available, immediately disable videofield.
+  if (!module_exists('filefield')) {
+    module_disable(array('videofield'));
+    drupal_set_message(t('The videofield module has been disabled. The <a href="http://drupal.org/project/filefield">FileField module</a> needs to be installed for it to work properly.'));
+    return;
+  }
+
+  module_load_include('inc', 'videofield', 'videofield_widget');
+}
+
+/**
+ * Implementation of hook_elements().
+ */
+function videofield_elements() {
+  $elements = array();
+  $filefield_elements = filefield_elements();
+  $elements['videofield_widget'] = $filefield_elements['filefield_widget'];
+  $elements['videofield_widget']['#process'][] = 'videofield_widget_process';
+
+  $elements['videofield_widget']['#value_callback'] = 'videofield_widget_value';
+  return $elements;
+}
+
+/**
+ * Implementation of hook_filefield_sources_widgets().
+ */
+function videofield_filefield_sources_widgets() {
+  return array('videofield_widget');
+}
+
+
+/**
+ * Implementation of hook_theme().
+ */
+function videofield_theme() {
+  $theme= array(
+      // Theme an image uploaded to videofield with alt and title.
+      'videofield_widget' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'videofield_widget.inc',
+      ),
+      'videofield_widget_item' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'videofield_widget.inc',
+      ),
+      'videofield_widget_preview' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'videofield_widget.inc',
+      ),
+      'videofield_widget_file' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'videofield_widget.inc',
+      ),
+      'videofield_item' => array(
+      'arguments' => array('file' => NULL, 'field' => NULL),
+      'file' => 'videofield_formatter.inc',
+      ),
+      'videofield_file' => array(
+      'arguments' => array('file' => NULL),
+      'file' => 'videofield_formatter.inc',
+      ),
+      // Themes for the formatters.
+      'videofield_formatter_videofield_embedded' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'videofield_formatter.inc',
+      ),
+      //from common.inc
+      'videofield_format_play' => array(
+      'arguments' => array('output' => NULL,'url' => NULL,'title' => NULL,'link_text' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_dcr' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_divx' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_flash' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_ogg_theora' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_quicktime' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_realmedia' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_swf' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+      'videofield_play_windowsmedia' => array(
+      'arguments' => array('node' => NULL),
+      'file' => 'common.inc',
+      ),
+  );
+
+  return $theme;
+}
+
+function videofield_widget_info() {
+  return array(
+    'videofield_widget' => array(
+      'label' => t('Video Upload'),
+      'field types' => array('filefield'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'callbacks' => array('default value' => CONTENT_CALLBACK_CUSTOM),
+      'description' => t('Widget for uploading videos.'),
+    ),
+  );
+}
+
+/**
+ * Implementation of CCK's hook_widget_settings().
+ */
+function videofield_widget_settings($op, $widget) {
+  switch ($op) {
+    case 'form':
+      return videofield_widget_settings_form($widget);
+    case 'save':
+      return videofield_widget_settings_save($widget);
+  }
+}
+
+/**
+ * Implementation of CCK's hook_widget().
+ *
+ * Assign default properties to item and delegate to videofield.
+ */
+function videofield_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  // Start with the videofield widget as a basic start.
+  // Note that videofield needs to modify $form by reference.
+  $element = filefield_widget($form, $form_state, $field, $items, $delta);
+
+  return $element;
+}
+
+
+//==========================================//
+// DEFINING A FORMATTER
+//==========================================//
+
+
+/**
+* Implementation of hook_field_formatter_info().
+* 
+* All fields should have a 'default' formatter.
+* Any number of other formatters can be defined as well.
+* It's nice for there always to be a 'plain' option
+* for the raw value, but that is not required.
+* 
+*/
+function videofield_field_formatter_info() {
+  $formatters = array(
+    'videofield_embedded' => array(
+      'label' => t('videofield embedded'),
+      'field types' => array('filefield'),
+      'description' => t('Displays video embedded in a web page.'),
+    ),
+  );
+
+  return $formatters;
+}
+
+
+/**
+ * Implementation of CCK's hook_default_value().
+ */
+function videofield_default_value(&$form, &$form_state, $field, $delta) {
+  return filefield_default_value($form, $form_state, $field, $delta);
+}
+
+/**
+ * Implementation of hook_form_[form_id]_alter().
+ *
+ * Modify the add new field form to change the default formatter.
+ */
+function videofield_form_content_field_overview_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'videofield_form_content_field_overview_submit';
+}
+
+/**
+ * Submit handler to set a new field's formatter to "videofield_embedded".
+ */
+function videofield_form_content_field_overview_submit(&$form, &$form_state) {
+  if (isset($form_state['fields_added']['_add_new_field']) && isset($form['#type_name'])) {
+    $new_field = $form_state['fields_added']['_add_new_field'];
+    $node_type = $form['#type_name'];
+    $field = content_fields($new_field, $node_type);
+    if ($field['widget']['module'] == 'videofield') {
+      foreach ($field['display_settings'] as $display_type => $display_settings) {
+        if ($field['display_settings'][$display_type]['format'] == 'default') {
+          $field['display_settings'][$display_type]['format'] = 'videofield_embedded';
+        }
+      }
+      content_field_instance_update($field);
+    }
+  }
+}
+
+//TODO: Configuration form.
+/**
+*Implementation of hook_menu()
+*/
+function videofield_menu() {
+  
+  $items['admin/settings/videofield'] = array(
+    'title' => 'Videofield',
+    'description' => 'Configure Videofield.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('videofield_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+ return $items;
+}
+
+/**
+ * Configuration Form
+ *
+ * @return
+ *   string of form content or error message
+ */
+function videofield_admin_settings_form() {
+  global $base_url;
+
+  $form = array();
+
+  $form['menu'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('General Settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+  );
+
+  $form['menu']['videofield_autoplay'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Automatically start video on page load'),
+      '#default_value' => variable_get('videofield_autoplay', TRUE),
+      '#description' => t('Start the video when the page and video loads')
+  );
+  $form['menu']['videofield_autobuffer'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Automatically start loading video on page load'),
+      '#default_value' => variable_get('videofield_autobuffer', FALSE),
+      '#description' => t('Start loading video when the page loads')
+  );
+  $form['menu']['videofield_videowidth'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width of video player'),
+      '#default_value' => variable_get('videofield_videowidth', 350),
+      '#description' => t('Specify width (in px) for video player')
+  );
+  $form['menu']['videofield_videoheight'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Height of video player'),
+      '#default_value' => variable_get('videofield_videoheight', 285),
+      '#description' => t('Specify height (in px) for video player')
+  );
+  
+  $form['players_menu'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Player Settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+  );
+  
+  $form['players_menu']['videofield_cortado'] = array(
+  '#type' => 'textfield',
+      '#title' => t('Cortado Applet location'),
+      '#default_value' => variable_get('videofield_cortado', '/cortado.jar'),
+      '#description' => t('You can download Cortado player from <a href="http://www.flumotion.net/cortado">here</a>. Then enter its location starting from Drupal root. ')
+  );
+  $form['players_menu']['videofield_mp4_player'] = array(
+  '#type' => 'select',
+      '#title' => t('Play .mp4 files using'),
+      '#default_value' => variable_get('videofield_mp4_player', 0),
+      '#options' => array('Quicktime','Flowplayer'),
+      '#description' => t('Select which player to use when playing .mp4 videos. ')
+  );
+
+ 
+  return system_settings_form($form);
+}

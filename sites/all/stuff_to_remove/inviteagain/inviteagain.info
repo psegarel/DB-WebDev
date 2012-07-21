@@ -1,0 +1,9 @@
+; $Id: node.info,v 1.4 2007/06/08 05:50:55 Exp $
+name = Inviteagain
+description = "Facilitates to invite again a group."
+dependencies[] = invite
+package = Invite
+version = 6.x-1.x-dev
+core = 6.x
+
+

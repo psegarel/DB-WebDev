@@ -1,0 +1,10 @@
+; $Id$
+name = Sina Weibo Share Button
+description = Adds a configurable <em>Share</em> button for Sina Weibo to each selected node type, as well as a configurable block with a <em>Share</em> box in it.
+core = 6.x
+; Information added by drupal.org packaging script on 2011-09-21
+version = "6.x-1.0"
+core = "6.x"
+project = "weibo_sharebutton"
+datestamp = "1316577107"
+

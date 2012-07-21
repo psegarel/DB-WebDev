@@ -1,0 +1,22 @@
+@charset "UTF-8";
+/* CSS Document */
+div.video_thumbnail  {
+	position: relative;
+}
+
+.video_thumbnail .overlay_button_video {
+	position: absolute;
+	left: 106px;
+	top: 58px;
+	width: 19px;
+	height: 12px;
+}
+
+.video_thumbnail .overlay_button_audio {
+	position: absolute;
+	left: 110px;
+	top: 57px;
+	width: 19px;
+	height: 12px;
+}
+

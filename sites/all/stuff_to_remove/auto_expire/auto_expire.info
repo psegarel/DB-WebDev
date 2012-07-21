@@ -1,0 +1,11 @@
+; $Id: auto_expire.info,v 1.3 2009/06/28 22:55:18 marcvangend Exp $
+
+name = Auto Expire
+description = "An auto expire system for nodes"
+core = 6.x
+; Information added by drupal.org packaging script on 2009-06-28
+version = "6.x-1.0-rc1"
+core = "6.x"
+project = "auto_expire"
+datestamp = "1246230603"
+

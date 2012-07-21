@@ -1,0 +1,13 @@
+name = "Pollfield"
+description = "Allows your site to capture votes on different topics in the form of multiple choice questions."
+dependencies[] = content
+dependencies[] = views
+package = CCK
+core = 6.x
+
+; Information added by drupal.org packaging script on 2011-05-30
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "pollfield"
+datestamp = "1306757653"
+

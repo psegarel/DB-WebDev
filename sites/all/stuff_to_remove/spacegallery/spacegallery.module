@@ -1,0 +1,59 @@
+<?php  // $Id: spacegallery.module,v 1.1.2.2 2010/04/08 20:43:11 rashad612 Exp $
+
+/**
+ * Implemantation of hook_views_api().
+ *
+ */
+function spacegallery_views_api() {
+  return array('api' => 2);
+}// end function spacegallery_views_api;
+
+/**
+ * implementation of hook_theme().
+ *
+ */
+function spacegallery_theme() {
+  return array(
+    'spacegallery' => array(
+      'template' => 'spacegallery',
+      'arguments' => array('rows' => array(), 'options' => array())
+    )
+  );
+}// end function spacegallery_theme;
+
+/**
+ * Theme the Space Gallery
+ *
+ */
+function theme_spacegallery_view($view, $options = array(), $rows = array()) {
+
+  $path = drupal_get_path('module', 'spacegallery');
+  
+  // adding css files..
+  drupal_add_css($path . '/css/spacegallery.css');
+  //-->
+  
+  // adding js files..
+
+  drupal_add_js($path . '/js/spacegallery_eye.js');
+  drupal_add_js($path . '/js/spacegallery.js');
+  //-->
+  
+  $js_footer = '
+    $(document).ready(function(){
+      $("#space-gallery").spacegallery({
+         loadingClass : "' . $options['loadingClass'] . '",
+        border : ' . $options['border'] . ',
+        duration : ' . $options['duration'] . ',
+        perspective : ' . $options['perspective'] . ',
+        minScale : ' . $options['minScale'] . '
+      });
+    });
+  ';
+  
+  drupal_add_js($js_footer, 'inline', 'footer');
+  
+  // adding js embed code..
+  
+  return theme('spacegallery', $rows, $options);
+}// end function theme_spacegallery_view;

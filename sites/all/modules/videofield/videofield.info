@@ -1,0 +1,15 @@
+; $Id: 
+name = Videofield
+description = "Defines a video field type for uploading videos."
+core = 6.x
+dependencies[] = filefield
+dependencies[] = flowplayer
+package = CCK
+
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "6.x-1.35"
+core = "6.x"
+project = "videofield"
+datestamp = "1295347304"
+

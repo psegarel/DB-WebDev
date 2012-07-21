@@ -1,0 +1,178 @@
+<?php
+/**
+ * @file
+ * Install profile for the pollfield module
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function pollfield_schema() {
+  $schema['pollfield'] = array(
+    'description' => t('TODO'),
+    'fields' => array(
+      'nid' => array(
+        'description' => t('Node ID'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'default' => 0,
+      ),
+      'field_table' => array(
+        'description' => t('The table where the pollfield is stored'),
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+      ),
+      'field_name' => array(
+        'description' => t('Pollfield name'),
+        'type' => 'varchar',
+        'length' => 32,
+        'default' => '',
+      ),
+      'field_name_delta' => array(
+        'description' => t('Delta for multiple fields'),
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'runtime' => array(
+        'description' => t('TODO'),
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'active' => array(
+        'description' => t('Whether the poll is active or not'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'nid' => array('nid'),
+      'field_table' => array('field_table'),
+    ),
+  );
+
+  $schema['pollfield_votes'] = array(
+    'description' => t('Pollfield results table'),
+    'fields' => array(
+      'nid' => array(
+        'description' => t('Pollfield node ID'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'not null' => TRUE,
+      ),
+      'field_table' => array(
+        'description' => t('The table where the pollfield is stored'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'field_name' => array(
+        'description' => t('The table where the pollfield is stored'),
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'uid' => array(
+        'description' => t('Voter user ID'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'delta' => array(
+        'description' => t('Choice'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => -1,
+      ),
+      'hostname' => array(
+        'description' => t('Voter hostname'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+
+    'field_name_delta' => array(
+        'description' => t('Pollfield delta'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'not null' => TRUE,
+        'default' => '0',
+      ),
+    'weight' => array(
+        'description' => t('Weight for mulitchoice'),
+        'type' => 'int',
+        'unsigned' => 1,
+        'not null' => TRUE,
+        'default' => '0',
+      ),
+    'cookie' => array(
+        'description' => t('Cookie for anonymous voters'),
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'indexes' => array(
+      'nid' => array('nid'),
+      'uid' => array('uid'),
+      'field_table' => array('field_table'),
+      'hostname' => array('hostname'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function pollfield_install() {
+  // Create tables.
+  drupal_install_schema('pollfield');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function pollfield_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('pollfield');
+
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function pollfield_enable() {
+  content_notify('enable', 'pollfield');
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function pollfield_disable() {
+  content_notify('disable', 'pollfield');
+}
+
+/**
+ * Table pollfield_votes update
+ */
+function pollfield_update_6001() {
+  db_add_column($ret, 'pollfield_votes', 'field_name_delta', 'int', array('unsigned' => 1, 'default' => 0));
+  return $ret;
+}
+
+/**
+ * Table pollfield_votes update
+ */
+function pollfield_update_6002() {
+  db_add_column($ret, 'pollfield_votes', 'weight', 'int', array('unsigned' => 1, 'default' => 0));
+  db_add_column($ret, 'pollfield_votes', 'cookie', 'text', array());
+  return $ret;
+}

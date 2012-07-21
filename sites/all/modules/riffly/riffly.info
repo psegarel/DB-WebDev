@@ -1,0 +1,9 @@
+name=Riffly
+description=Let your users leave you video or audio comments
+core=6.x
+; Information added by drupal.org packaging script on 2009-02-20
+version = "6.x-1.0-rc1"
+core = "6.x"
+project = "riffly"
+datestamp = "1235159152"
+

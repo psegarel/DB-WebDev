@@ -1,0 +1,13 @@
+; $Id: spacegallery.info,v 1.1 2010/03/12 21:04:37 rashad612 Exp $
+name = Space Gallery
+description = Space Gallery
+package = Views
+core = 6.x
+dependencies[] = views
+
+; Information added by drupal.org packaging script on 2010-04-08
+version = "6.x-1.1"
+core = "6.x"
+project = "spacegallery"
+datestamp = "1270759810"
+

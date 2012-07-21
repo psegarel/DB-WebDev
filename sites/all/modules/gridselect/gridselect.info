@@ -1,0 +1,11 @@
+name = gridselect
+description = Defines a new field type for multi-select similar to the facebook friend selector.
+package = User interface
+core = 6.x
+
+; Information added by drupal.org packaging script on 2011-02-25
+version = "6.x-6.x-dev"
+core = "6.x"
+project = "gridselect"
+datestamp = "1298619361"
+

@@ -1,0 +1,49 @@
+Pollfield 6.x-1.x
+-----------------
+
+## Drupal coding standards ##
+- Issue #620604 by bryan kennedy: Spaces and indentation cleanup
+-- Removed spaces at the end t() strings
+-- Added @file doxygen tags
+-- Fixing tabs and spaces
+-- Fixed tabs with spaces
+-- Fixed spacing
+-- Striping trailing whitespace
+-- All caps boolens
+-- Put spaces around arrays
+-- Correcting else line breaks.
+-- Implementing Drupal string concat.
+-- Added space btwn , and &
+-- Added spaces btw , and "
+-- Added space btwn comma and single quote
+-- Added a space between foreach and paren
+-- Added a space between commas and vars
+-- Added spaces before curly braces
+-- Removing trailing whitespace.
+-- Changed tabs to spaces
+-- Fixing CSS formatting
+- #1166658 by bryan kennedy: Improving readme
+- #1163176 by dunx: Fixing another spelling error.
+- #1163176 by dunx: Fixed a spelling error.
+- #924376 by pbull: Fixed typo
+- Cleaned up database table descriptions
+- Added quotes around strings in .info file
+- Added a TODO in the README for further updating.
+- Added a README.txt file per http://drupal.org/node/161085
+
+## Bugfixes ##
+- #941314 by tobiassjosten, vikfroberg: Fixed undefined arrays
+- #1163176 by dunx: Fixing another spelling error.
+- #1163176 by dunx: Fixed a spelling error.
+- #924376 by pbull: Fixed typo
+- #860254 by bryan kennedy: Fixed 'more choices' bug
+- #624432 by sun, bryan kennedy: Defined array before use.
+
+## Drupal.org git transition ##
+- CVS keywords removed
+
+??? - Not sure which version these are associated with
+------------------------------------------------------
+- #134084 force multiple values field to be filled out and disable it
+- #130041 make sure pollfield does not require questions when field is not required
+- #first build of cvs for drupal 6

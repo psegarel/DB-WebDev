@@ -1,0 +1,25 @@
+/* CSS Document */
+
+/*hack for block ad on top*/
+
+#block-ad-382 {
+
+	position:absolute;
+
+	left:-1000px;
+
+	top:-1000px;
+
+}
+
+.tips, .tips + p a {  display:none;}
+
+.node-form ul.tips {
+
+	display:none;
+
+}
+
+
+
+

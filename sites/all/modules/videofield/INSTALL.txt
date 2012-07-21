@@ -1,0 +1,17 @@
+$Id: INSTALL.txt,v 1.2 2009/11/10 19:01:35 heshanmw Exp $
+
+REQUIREMENTS
+--------------------------------------------------------------------------------
+CCK - http://drupal.org/project/cck
+FileField - http://drupal.org/project/filefield
+
+
+INSTALL INSTRUCTIONS FOR VIDEOFIELD.MODULE
+--------------------------------------------------------------------------------
+1. Copy videofield folder to your sites/all/modules directory.
+2. Extract Flowplayer from http://drupal.org/project/flowplayer to sites/all/modules (This require for FLV files).
+3. Enable both the Flowplayer and Videofield modules in admin/build/modules.
+4. Choose any Content type and go to Edit -> Manage fields.
+5. Add new field, select filefield as fieldtype and Video Upload as widget.
+6. Save.
+7. Create new content and upload your video.

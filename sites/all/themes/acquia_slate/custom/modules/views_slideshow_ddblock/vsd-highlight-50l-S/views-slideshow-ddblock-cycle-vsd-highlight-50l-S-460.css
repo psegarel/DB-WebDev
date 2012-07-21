@@ -1,0 +1,63 @@
+/**
+ * Dynamic display block module template:vsd-highlight-50l-S-460 - Cascading Style Sheet 
+ * (c) Copyright Phelsa Information Technology 2009 - 2010. All rights reserved.
+ * Version 1.0(29-DEC-2009) 
+ */ 
+
+/*
+container width                                                                                   = 460px
+container-inner width = container width - (2 x padding) - (2 x border)  = 460 - (2 x 5) - (2 x 2) = 446px
+
+slider width          = container-inner width - custom-pager-item width = 446 - 205               = 241px
+slider inner height                                                                               = 290px
+
+slider-inner img height = slider height                                                           = 290px
+slider-inner img width  = slider width                                                            = 241px
+
+slide-text-horizontal height =                                                                    = 100px
+slide-text-horizontal width  = slider width                                                       = 241px
+slide-text-vertical height   = slider inner height                                                = 290px
+slide-text-vertical width    =                                                                    = 200px
+slide-text-inner-horizontal height = slide-text-horizontal height - (2 x 10) padding = 100 - 20   =  80px
+slide-text-inner-vertical height   = slide-text-vertical height - (2 x 10) padding   = 290 - 20   = 270px
+slide-title-horizontal width       = slide-text-horizontal width - (2 x 10) padding  = 241 - 20   = 221px
+slide-body-vertical width          = slide-text-vertical width - (2 x 10) padding    = 200 - 20   = 180px
+slide_body-horizontal width        = slide-text-horizontal width - 25 - 120 (button) = 241 - 145  = 96px
+
+custom-pager-inner height          = slider-inner height                                          = 290px
+views-slideshow-ddblock-prev-next-slide width = slider width                                      = 241px
+prev-next-pager width = container-inner width                                                     = 446px
+prev-next-pager a.count = (slider width / 2) - 23 = (460 / 2) - 23 = 230 - 23                     = 207px
+*/
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.container{width:460px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.container-inner{height:307px;width:446px;}
+
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slider{width:241px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slider-inner{height:290px;}
+
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide{}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-inner{}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-inner img{height:290px;width:241px;}
+
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-text-horizontal{height:100px;width:241px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-text-vertical{height:290px;width:200px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-text-inner-horizontal{height:80px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-text-inner-vertical{height:270px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-title-horizontal{width:221px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-body-vertical{width:180px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.slide-body-horizontal{width:96px;}
+
+/* custom pager */
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.custom-pager-inner{height:290px;}
+
+/* previous/next pager slide */
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.views-slideshow-ddblock-prev-next-slide{width:241px;}
+
+/* previous/next pager pager*/
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.prev-next-pager{width:446px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.prev-next-pager a.prev{left:15px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.prev-next-pager a.count{left:207px;}
+div.views-slideshow-ddblock-cycle-vsd-highlight-50l-S div.prev-next-pager a.next{right:15px;}
+
+
+

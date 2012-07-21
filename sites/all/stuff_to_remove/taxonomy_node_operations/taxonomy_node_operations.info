@@ -1,0 +1,10 @@
+;$Id: taxonomy_node_operations.info,v 1.1 2007/07/12 05:52:28 morrissinger Exp $
+name = Taxonomy Node Operations
+description = Adds the ability to assign terms to nodes in the node operations dropdown in admin/content/node.
+dependencies[] = taxonomy
+; Information added by drupal.org packaging script on 2007-07-12
+version = "6.x-2.0"
+core = "6.x"
+project = "taxonomy_node_operations"
+datestamp = "1184251852"
+
