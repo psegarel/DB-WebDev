@@ -1,1 +1,0 @@
-O:7:"OzState":5:{s:7:"inviter";O:9:"OzInviter":4:{s:3:"obj";N;s:8:"contacts";N;s:7:"captcha";N;s:6:"config";a:2:{s:18:"limit.max_contacts";i:10000;s:15:"limit.max_pages";i:30;}}s:8:"contacts";N;s:5:"state";i:0;s:4:"view";s:8:"selector";s:6:"svc_id";N;}
