@@ -1,5 +1,4 @@
 <?php
-// $Id: mail.inc,v 1.8.2.7 2009/06/18 12:15:44 goba Exp $
 
 /**
  * Compose and optionally send an e-mail message.
@@ -99,7 +98,7 @@ function drupal_mail($module, $key, $to, $language, $params = array(), $from = N
     'MIME-Version'              => '1.0',
     'Content-Type'              => 'text/plain; charset=UTF-8; format=flowed; delsp=yes',
     'Content-Transfer-Encoding' => '8Bit',
-    'X-Mailer'                  => 'Drupal'
+    'X-Mailer'                  => 'Pressflow'
   );
   if ($default_from) {
     // To prevent e-mail from looking like spam, the addresses in the Sender and
@@ -475,7 +474,7 @@ function _drupal_html_to_text_pad($text, $pad, $prefix = '') {
   if (($p = strrpos($text, "\n")) === FALSE) {
     $p = -1;
   }
-  $n = max(0, 79 - (strlen($text) - $p));
+  $n = max(0, 79 - (strlen($text) - $p) - strlen($prefix));
   // Add prefix and padding, and restore linebreak.
-  return $text . $prefix . str_repeat($pad, $n - strlen($prefix)) ."\n";
+  return $text . $prefix . str_repeat($pad, $n) ."\n";
 }
